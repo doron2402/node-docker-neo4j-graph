@@ -9,3 +9,11 @@
 
 2. Run the express App
      - docker build . // From the directory 
+
+
+# How to run?
+
+- Api 
+		docker run -itd --link neo4j:neo4j -p 9999:9999 --name api <imageID>
+- Neo4j
+		docker run -i -t -d --name neo4j --cap-add=SYS_RESOURCE -p 7474:7474 tpires/neo4j

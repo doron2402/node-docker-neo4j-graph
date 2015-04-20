@@ -6,7 +6,6 @@ RUN npm cache clean && npm install
 
 ENV NODE_ENV develop 
 ENV PORT 9999
-ENV NEO4J_URL 
 EXPOSE 9999
 
 CMD ["node", "app.js"]
