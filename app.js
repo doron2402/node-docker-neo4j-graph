@@ -1,13 +1,14 @@
-
+if (!global.__BASE) {
+	global.__BASE = __dirname;
+}
 /**
  * Module dependencies.
  */
 
-var express = require('express')
-  , routes = require('./routes')
-  , http = require('http')
-  , path = require('path');
-
+var express = require('express');
+var routes = require('./routes');
+var http = require('http');
+var path = require('path');
 var app = express();
 
 // all environments
@@ -27,7 +28,7 @@ if ('development' == app.get('env')) {
 }
 
 app.locals({
-    title: 'Node-Neo4j Template'    // default title
+    title: 'OpenTable - Social'    // default title
 });
 
 // Routes
@@ -39,9 +40,14 @@ app.post('/users', routes.users.create);
 app.get('/users/:id', routes.users.show);
 app.post('/users/:id', routes.users.edit);
 app.del('/users/:id', routes.users.del);
-
+//Follow
 app.post('/users/:id/follow', routes.users.follow);
 app.post('/users/:id/unfollow', routes.users.unfollow);
+
+//Restaurants
+app.get('/restaurants', routes.restaurants.list);
+app.get('/restaurants/:id', routes.restaurants.show);
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening at: http://localhost:%d/', app.get('port'));

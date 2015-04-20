@@ -2,7 +2,7 @@
 // Routes to CRUD users.
 
 var User = require('../models/user');
-
+var RestaurantModel = require('../models/restaurants');
 /**
  * GET /users
  */
@@ -78,13 +78,30 @@ exports.del = function (req, res, next) {
 exports.follow = function (req, res, next) {
     User.get(req.params.id, function (err, user) {
         if (err) return next(err);
-        User.get(req.body.user.id, function (err, other) {
-            if (err) return next(err);
-            user.follow(other, function (err) {
+        if (req.body.user && req.body.user.id) {
+            //Follow user
+            var id = req.body.user.id;
+            User.get(id, function (err, other) {
                 if (err) return next(err);
-                res.redirect('/users/' + user.id);
+                user.follow(other, function (err) {
+                    if (err) return next(err);
+                    res.redirect('/users/' + user.id);
+                });
             });
-        });
+        } else if (req.body.restaurant && req.body.restaurant.id){
+            var id = req.body.restaurant.id;
+            //Follow restaurant
+            RestaurantModel.get(id, function (err, other) {
+                if (err) return next(err);
+                user.follow(other, function (err) {
+                    if (err) return next(err);
+                    res.redirect('/users/' + user.id);
+                });
+            });
+        } else {
+            console.error('wrong request');
+            res.redirect('/');
+        }
     });
 };
 

@@ -1,12 +1,15 @@
 // user.js
 // User model logic.
 
-var neo4j = require('neo4j');
-var db = new neo4j.GraphDatabase(
-    process.env['NEO4J_URL'] ||
-    process.env['GRAPHENEDB_URL'] ||
-    'http://localhost:7474'
-);
+// var neo4j = require('neo4j');
+// var neo4jUrl;
+// if (process.env['NEO4J_PORT_7474_TCP_ADDR']){
+//   neo4jUrl = 'http://neo4j:doron@' + process.env['NEO4J_PORT_7474_TCP_ADDR'] + ':7474'; 
+// } else {
+//   neo4jUrl = 'http://neo4j:doron@localhost:7474';
+// }
+
+var db = require('./neodb');
 
 // private constructor:
 
@@ -140,6 +143,7 @@ User.getAll = function (callback) {
     ].join('\n');
 
     db.query(query, null, function (err, results) {
+        console.log(err);
         if (err) return callback(err);
         var users = results.map(function (result) {
             return new User(result['user']);
